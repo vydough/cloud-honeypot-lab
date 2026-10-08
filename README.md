@@ -64,6 +64,34 @@ This project was intended for learning and research into malicious activitty and
 ## Project Structure
 
 ## Project Process
+### AWS IAM Configuration
+Terraform configuration was applied via a dedicated terraform-user IAM role. Permissions were added based on the following resources required for this project: 
+- VPC 
+- Subnet
+- IGW
+- Route Table
+- Security group
+- EC2
+- Key pair
+- IAM role 
+
+Separation of policies is required to separate responsibilities for any user. This makes it easier for removal and inspection of roles if issues arise. 
+
+``` bash 
+terraform-user
+│
+├── Honeypot-Networking
+│    └── VPC, subnet, route table, IGW, SG
+│
+├── Honeypot-EC2
+│    └── instance, key pair, volumes
+│
+└──  Honeypot-IAM
+     └── only the project EC2 role/profile
+``` 
+This is important as the Honeypot is a deliberate attack surface which is exposed. Restricting the IAM role here is critical. 
+
+
 ### AWS EC2 Configuration 
 AWS infrastrcuture was provisioned using Terraform. 
 Resources include: 
@@ -76,7 +104,13 @@ Resources include:
 - EC2 SSH key pair
 - IAM role and instance profile
 
+This project used dedicated roles with permissions separated: 
+- **HoneypotTerraformEC2Policy** – manages the EC2 instance, AMI lookups, volumes, key pairs, and required EC2 read operations.
+- **HoneypotTerraformNetworkPolicy** – manages the VPC, subnet, Internet Gateway, route tables, and Security Group rules.
+- **HoneypotTerraformIAMPolicy** – allows Terraform to manage only the honeypot IAM role and instance profile, including restricted `iam:PassRole` access to EC2.
+
 ### Cowrie
+As the core honeypot component, it emulates an SSH service so attackers and automated scanners interact with a controlled fake environment. It records useful telemetry which can then be analysed. 
 
 Cowrie runs under a dedicated non priviledged Linux user
 
