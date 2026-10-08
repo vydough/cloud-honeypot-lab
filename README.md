@@ -8,19 +8,19 @@ Designed to capture , monitor and analyse SSH login activity while keeping real 
 Deployed on an isolated cloud VM and intentionally exposed to attract automated scans, brute-force attempts and other hostile activity. 
 
 Typical honeypot projects use T-pot, an all in one platform. However, as I wanted to understand the individual components involved by building it manually: 
-    - Honeypot deployment
-    - Network security
-    - Loggin
-    - Monitoring
-    - Threat analysis
+- Honeypot deployment
+- Network security
+- Loggin
+- Monitoring
+- Threat analysis
 
 ## Objective 
 The project aims to collect attacker telemetry such as: 
-    - Source IP
-    - Attempted usernames and paswords
-    - Commands entered in sessions
-    - Connection timestamps
-    - Other behavioural information
+- Source IP
+- Attempted usernames and paswords
+- Commands entered in sessions
+- Connection timestamps
+- Other behavioural information
 
 Log information is viewed via JSON. 
 
@@ -31,35 +31,35 @@ This project was intended for learning and research into malicious activitty and
 ## Key Features
 
 **SSH/Telnet attack monitoring**
-    - Uses Cowrie to emulate SSH and Telnet services.
-    - Captures authentication attempts and interactive attacker sessions.
+- Uses Cowrie to emulate SSH and Telnet services.
+- Captures authentication attempts and interactive attacker sessions.
 
 **Credential attempt logging**
-    - Records usernames and passwords attempted by remote hosts.
-    - Allows analysis of commonly targeted credentials.
+- Records usernames and passwords attempted by remote hosts.
+- Allows analysis of commonly targeted credentials.
 
 **Command and session monitoring**
-    - Records commands entered by attackers after connecting to the honeypot.
-    - Provides insight into attacker behaviour and post-compromise activity.
+- Records commands entered by attackers after connecting to the honeypot.
+- Provides insight into attacker behaviour and post-compromise activity.
 
 **Source IP tracking**
-    - Logs the IP addresses of systems connecting to the honeypot.
-    - Enables identification of repeated scanners and attack sources.
+- Logs the IP addresses of systems connecting to the honeypot.
+- Enables identification of repeated scanners and attack sources.
 
 **Structured JSON logging**
-    - Uses structured honeypot logs to simplify searching, parsing, and analysis.
+- Uses structured honeypot logs to simplify searching, parsing, and analysis.
 
 **Cloud log monitoring**
-    - Honeypot logs can be forwarded to services such as AWS CloudWatch for analysis
+- Honeypot logs can be forwarded to services such as AWS CloudWatch for analysis
 
 **Attack visualisation**
-    - attack frequency
-    - source IP addresses
-    - attempted usernames
-    - attempted passwords
-    - attacker commands
-    - geographic distribution
-    - attack trends over time
+- attack frequency
+- source IP addresses
+- attempted usernames
+- attempted passwords
+- attacker commands
+- geographic distribution
+- attack trends over time
 
 ## Project Structure
 
