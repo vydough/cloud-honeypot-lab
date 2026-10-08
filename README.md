@@ -104,11 +104,18 @@ Resources include:
 - EC2 SSH key pair
 - IAM role and instance profile
 
-This project used dedicated roles with permissions separated: 
+![EC2 instance for the honeypot](/images/aws-ec2-honeypot.png)
+![VPC for the honeypot](/images/aws-vpc-honeypot.png)
+![SG for the honeypot](/images/aws-sg-honeypot.png)
+![IGW for the honeypot](/images/aws-igw-honeypot.png)
+
+This project was completed using a dedicated AWS IAM user, terraform-user, with infrastructure permissions separated by service and responsibility. The EC2 honeypot uses a separate IAM role with limited runtime permissions specified in iam.tf. 
+
 - **HoneypotTerraformEC2Policy** – manages the EC2 instance, AMI lookups, volumes, key pairs, and required EC2 read operations.
 - **HoneypotTerraformNetworkPolicy** – manages the VPC, subnet, Internet Gateway, route tables, and Security Group rules.
 - **HoneypotTerraformIAMPolicy** – allows Terraform to manage only the honeypot IAM role and instance profile, including restricted `iam:PassRole` access to EC2.
 
+![IAM User: terraform-user and permissions](/images/aws-iam-terraform-user.png)
 ### Cowrie
 As the core honeypot component, it emulates an SSH service so attackers and automated scanners interact with a controlled fake environment. It records useful telemetry which can then be analysed. 
 
