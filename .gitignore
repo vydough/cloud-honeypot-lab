@@ -1,0 +1,18 @@
+# Local SSH key folder
+keys/*
+*.key
+.env
+
+# SSH private keys 
+*.key
+*.pem
+
+# Terraform 
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# Environment/secrets
+.env
+*.secret
