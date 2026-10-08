@@ -2,7 +2,8 @@
 An AWS-hosted honeypot that acts as a deliberately misconfigured site for self-study and analysis of live attack traffic. 
 
 ## Overview  
-This project implements a cloud based honeypot environment designed to capture , monitor and analyse malicious activity targeting exposed internet services.
+A cloud based honeypot environment deployed on AWS via Terraform 
+Designed to capture , monitor and analyse SSH login activity while keeping real administrative SSH access from the honeypot for analysis and monitoring. 
 
 Deployed on an isolated cloud VM and intentionally exposed to attract automated scans, brute-force attempts and other hostile activity. 
 
@@ -21,7 +22,9 @@ The project aims to collect attacker telemetry such as:
     - Connection timestamps
     - Other behavioural information
 
-Collected logs are then forwarded to central monitoring platform (CloudWatch) for analysis. 
+Log information is viewed via JSON. 
+
+Updated: Collected logs are then forwarded to central monitoring platform (CloudWatch) for analysis. 
 
 This project was intended for learning and research into malicious activitty and for gaining practical experience with cloud, Linux, threat monitoring and security analysis
 
@@ -64,7 +67,11 @@ This project was intended for learning and research into malicious activitty and
 ### AWS EC2 Configuration 
 ### Cowrie 
 ### Exposing traffic
-### Storing command logs
+### Accessing Command Logs
+![Example logs after Cowrie session opened](/images/cowrie-connection-open.png)
+
+![Example logs after Cowrie session closed](/images/cowrie-connection-closed.png)
+
 ### Log ship to CloudWatch
 ### Building Dashboard
 
