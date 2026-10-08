@@ -1,4 +1,4 @@
-# Cloud-native Honeypot For Attack Telemetry and Threat Analysis
+# AWS Cowrie Honeypot For Attack Telemetry and Threat Analysis
 An AWS-hosted honeypot that acts as a deliberately misconfigured site for self-study and analysis of live attack traffic. 
 
 ## Overview  
@@ -65,18 +65,104 @@ This project was intended for learning and research into malicious activitty and
 
 ## Project Process
 ### AWS EC2 Configuration 
-### Cowrie 
-### Exposing traffic
+AWS infrastrcuture was provisioned using Terraform. 
+Resources include: 
+- Dedicated VPC
+- Public subnet
+- Internet Gateway
+- Public route table
+- Security Group
+- Ubuntu EC2 instance
+- EC2 SSH key pair
+- IAM role and instance profile
+
+### Cowrie
+
+Cowrie runs under a dedicated non priviledged Linux user
+
+```bash
+sudo adduser --disabled-password cowrie
+```
+
+A Python virtual environment is used for the Cowrie installation:
+
+```bash
+mkdir ~/honeypot
+cd ~/honeypot
+
+python3 -m venv cowrie-env
+source cowrie-env/bin/activate
+
+pip install --upgrade pip
+pip install cowrie
+```
+Cowrie is initialized and started with:
+
+```bash
+cowrie init
+cowrie start
+cowrie status
+```
+
+Cowrie listens internally on TCP port `2222`.
+
+Initally, the Ubuntu OpenSSH service was working from port 22. Then it was moved to port 22222. This prevents public SSH traffic intended for the honeypot from reaching the real administrative SSH service.
+
+I then redirected incoming traffic on the normal SSH port is redirected to Cowrie:
+
+```bash
+sudo iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
+```
+![Adding Pre-routing rules for iptables to re-direct to port 2222 instead of 22](iptables-prerouting-port2222.png)
+
+The redirect can be verified with:
+
+```bash
+sudo iptables -t nat -L PREROUTING -n -v
+```
+![Successful confirmation of re-directing to Port 2222](iptables-prerouting-confirmation.png)
+
+Testing was done locally from the EC2 instance. This command attempts administrative connection after the redirect: 
+
+```bash
+ssh -p 2222 root@127.0.0.1
+```
+
+Testing was also done externally from another machine (terminal):
+
+```bash
+ssh root@127.0.0.1
+```
+The external connection should reach Cowrie rather than the real OpenSSH service.
+
+
+### Network Configuration 
+I intended to create a private VPC and public subnet. 
+
+Separation of the SSH port to ensure that specified ports are isolated to the attacking surface, whilst another port is restricted to the administrator's public IP using the AWS Security group. 
+
+**VPC: 10.20.0.0/16**
+
+**Public Subnet: 10.20.1.0/24**
+
+**Port 22: Public honeypot SSH**
+
+**Port  2222: Internal Cowrie SSH listener**
+
+**Port 22222: Administrative openSSH**
+
 ### Accessing Command Logs
+Initally, the command logs output by Cowrie were difficult to read in raw format. 
+Installing ***jq***  allowed the logs to be formatted into a structured view, looking at information such as source IPs, login attempts, attacker commands. 
+![Example logs before jq installation](/images/cowrie-log-events.png)
+
 ![Example logs after Cowrie session opened](/images/cowrie-connection-open.png)
 
 ![Example logs after Cowrie session closed](/images/cowrie-connection-closed.png)
 
-### Log ship to CloudWatch
+### Log ship to CloudWatch (Future Implementation)
 ### Building Dashboard
-
-
-## Future Improvements
+### Future Improvements
 
 
 
