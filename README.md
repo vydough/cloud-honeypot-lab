@@ -113,14 +113,14 @@ I then redirected incoming traffic on the normal SSH port is redirected to Cowri
 ```bash
 sudo iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 2222
 ```
-![Adding Pre-routing rules for iptables to re-direct to port 2222 instead of 22](iptables-prerouting-port2222.png)
+![Adding Pre-routing rules for iptables to re-direct to port 2222 instead of 22](images/iptables-prerouting-port2222.png)
 
 The redirect can be verified with:
 
 ```bash
 sudo iptables -t nat -L PREROUTING -n -v
 ```
-![Successful confirmation of re-directing to Port 2222](iptables-prerouting-confirmation.png)
+![Successful confirmation of re-directing to Port 2222](images/iptables-prerouting-confirmation.png)
 
 Testing was done locally from the EC2 instance. This command attempts administrative connection after the redirect: 
 
