@@ -49,5 +49,6 @@ resource "aws_instance" "honeypot" {
 
   tags = {
     Name = "${var.project_name}-ec2"
+    Environment = "Lab"
   }
 }
